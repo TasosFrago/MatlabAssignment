@@ -2,11 +2,16 @@ function approximate(l)
 % APPROXIMATE - 
 %   
 
+    % approximation = 1;
+    % fact = 0;
     % for n = 1:l
-    %     e = (1 + 1/n);
-    %     e = e^n;
+    %     fact = factorial(n);
+    %     approximation = approximation + 1/fact;
     % end
-    e = (1 + 1/l);
-    e = e^l;
-    disp(e)
+    % fprintf("%0.10f\n", approximation);
+    % fprintf("%0.10f\n", exp(1));
+
+    e = round(exp(1), l);
+    fprintf("%.11f \n", e);
+
 end

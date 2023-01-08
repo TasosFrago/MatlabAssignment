@@ -1,7 +1,7 @@
 
-* Μαθηματικό Λογισμικό Εργασία Εξαμήνου
+* Ξ¤ΞµΟƒΟ„
 
-** ¶σκηση 1
+** Ξ‘Ξ»Ξ»Ο 
 
 
 #+BEGIN_EXPORT latex
@@ -14,3 +14,5 @@ $\Large R_1 = \frac{AB+AC-BC}{2}$
 #+ATTR_ORG: :width 300
 [[./ask1/outputImage.jpg]]
 
+
+Ο„ΞµΟƒΟ„

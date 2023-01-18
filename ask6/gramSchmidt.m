@@ -14,8 +14,12 @@ function [ U ] = gramSchmidt(V)
         if(mod(i, 2))
             s = s + proj(V(:, i+1), U(:, i));
         end
+        % for k=1:i
+        %     s = s + ((sum(V(:, i+1) .* U(:, k))) / (sum(U(:, k) .^ 2))) * U(:, k);
+        % end
         U(:, i+1) = V(:, i+1) - s;
     end
+
 end
 
 function [ res ] = proj(v, u)

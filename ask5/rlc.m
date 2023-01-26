@@ -19,16 +19,26 @@ function rlc()
     VR = VRf(w);
     VL = VLf(w);
     VC = VCf(w);
+    max(VL)
 
-    hold on
-    ylim([-400 400]);
-    xlim([-1000 1000]);
-    plot(w, VR);
-    plot(w, VL);
-    plot(w, VC);
-    grid on;
-    line([0,0], ylim, 'Color', 'k', 'LineWidth', 0.5); % Draw line for Y axis.
-    line(xlim, [0,0], 'Color', 'k', 'LineWidth', 0.5); % Draw line for X axis.
-    hold off
+    % syms x;
+    % zf = Zf(x);
+    % vrf = VRf(x);
+    % vlf = VLf(x);
+    % vcf = VCf(x);
+
+    % ex_point = solve(diff(vlf, x)==0, x);
+    % double(ex_point)
+
+    % hold on
+    % ylim([-400 400]);
+    % xlim([-1000 1000]);
+    % plot(w, VR);
+    % plot(w, VL);
+    % plot(w, VC);
+    % grid on;
+    % line([0,0], ylim, 'Color', 'k', 'LineWidth', 0.5); % Draw line for Y axis.
+    % line(xlim, [0,0], 'Color', 'k', 'LineWidth', 0.5); % Draw line for X axis.
+    % hold off
 
 end

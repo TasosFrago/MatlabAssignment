@@ -1,4 +1,4 @@
-function [res, n] = newtonRaphson(f, df, x0, n, tol)
+function [res, i] = newtonRaphson(f, df, x0, n, tol)
     res = [0 0];
     for i = 1:n
         invJ = inv(df(x0));

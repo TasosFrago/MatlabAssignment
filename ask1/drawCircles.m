@@ -12,6 +12,7 @@ function drawCircles(x, y)
     R(3) = (-AB + AC + BC)/2;
 
     hold on
+
     plot([x(1) x(2)], [y(1) y(2)], 'b');
     plot([x(2) x(3)], [y(2) y(3)], 'b');
     plot([x(1) x(3)], [y(1) y(3)], 'b');

@@ -1,4 +1,3 @@
-
 #+AUTHOR: Tasos Fragkopoulos
 
 * Εργασία Εξαμήνου Μαθηματικό Λογισμικό
@@ -15,27 +14,33 @@
 
 Ξέρωντας τα αυτά η απόσταση μεταξύ κάθε κέντρου θα είναι:
 
-    \t$AB = R_1 + R_2$
+#+BEGIN_CENTER
+    $AB = R_1 + R_2$
 
     $AC = R_1 + R_3$
 
     $BC = R_2 + R_3$
+#+END_CENTER
 
 Μπορούμε να λύσουμε για $R_1, R_2, R_3$ και να βρούμε ότι:
 
+#+BEGIN_CENTER
     $R_1 = \frac{AB + AC - BC}{2}$
 
     $R_2 = \frac{AB - AC + BC}{2}$
 
     $R_1 = \frac{-AB + AC + BC}{2}$
+#+END_CENTER
 
 Επιπλέων ξέρουμε οτι:
 
+#+BEGIN_CENTER
     $AB = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$
 
     $AC = \sqrt{(x_3 - x_1)^2 + (y_3 - y_1)^2}$
 
     $BC = \sqrt{(x_3 - x_2)^2 + (y_3 - y_2)^2}$
+#+END_CENTER
 
 Έτσι υπολογίζοντας αρχικά τα $AB, AC, BC$ και κάνοντας τις πράξεις θα βρούμε τα $R_1, R_2, R_3$
 
@@ -44,8 +49,73 @@
 Η βασική επίλυση του προβλήματος γίνεται στο αρχείο =drawCircles.m= που έχει δύο συναρτήσεις, την =drawCircles(x, y)= και την =circle(x, y, r)=. Επίσης υπάρχει το αρχείο =example.m= που τρέχει την συνάρτηση =drawCircles= με x, y τις τιμές που δώθηκαν απο την εκφώνηση ως παράδειγμα, την χρονομετρεί με την χρήση της συνάρτησης =timeit()= του Matlab και εκτυπώνει τον χρόνο.
 
 Στη συνάρτηση =drawCircles(x, y)= αρχικά υπολογίζουμε τις τιμές AB, AC, BC.
+
 #+BEGIN_SRC matlab
-AB = sqrt((x(2) - x(1))^2 + (y(2) - y(1))^2)
-AC = sqrt((x(3) - x(1))^2 + (y(3) - y(1))^2)
-BC = sqrt((x(3) - x(2))^2 + (y(3) - y(2))^2)
+AB = sqrt((x(2) - x(1))^2 + (y(2) - y(1))^2);
+AC = sqrt((x(3) - x(1))^2 + (y(3) - y(1))^2);
+BC = sqrt((x(3) - x(2))^2 + (y(3) - y(2))^2);
+#+END_SRC
+
+Ένας άλλος τρόπος να τις υπολογίσουμε θα ήταν να χρησιμοποιήσουμε την συνάρτηση =norm()=.
+
+Στην συνέχεια φτιάχνουμε ενα διάνυσμα R, στο οποίο θα βάλουμε τις τιμές των $R_1, R_2, R_3$ που θα υπολογίσουμε.
+
+#+BEGIN_SRC matlab
+R = [];
+R(1) = ( AB + AC - BC)/2;
+R(2) = ( AB - AC + BC)/2;
+R(3) = (-AB + AC + BC)/2;
+#+END_SRC
+
+Τέλος κάνουμε plot τις ακμές του τριγώνου και τους κύκλους. Για τους κύκλους θα χρησιμοποιούμε την βοηθητική συνάρτηση =circle(x, y, r)= που βρίσκεται στο ίδιο αρχείο. Παίρνει ως ορίσματα τις συντεταγμένες (x, y) του κέντρου του κύκλου και το μήκος της ακτίνας του r και κάνει plot τον κάθε κύκλο.
+
+#+BEGIN_SRC matlab
+function circle(x, y, r)
+% CIRCLE -
+%
+    th = 0:pi/50:2*pi;
+    xunit = r * cos(th) + x;
+    yunit = r * sin(th) + y;
+    plot(xunit, yunit);
+end
+#+END_SRC
+Σε αυτή ορίζουμε το διάνυσμα th που έχει τις τιμές από 0 μέχρι $2\pi$ με βήμα $\frac{\pi}{50}$ και μετά υπολογίζουμε τις x και y συντεταγμένες του κύκλου στις xunit και yunit αντίστοιχα.
+
+** Άσκηση 2
+
+*** Επίλυση στο Matlab
+
+Ο υπολογισμός του e με τον τύπο
+#+BEGIN_CENTER
+$e = \lim_{n\rightarrow \infty}(1 + \frac{1}{n})^n$
+#+END_CENTER
+γίνεται στο *Matlab*:
+
+#+BEGIN_SRC matlab
+while(abs(eM - e) > tol)
+    e = (1 + 1/n)^n;     % Approximate e using formula
+    n = n * 2;           % Double the value of n in each iteration
+    count = count + 1;   % Increment the iteration count
+end
+#+END_SRC
+
+Η λούπα τρέχει όσο η απόλυτη διαφορά του e που υπολογίζουμε με του eM (που είναι το e που δίνεται απο το Matlab matlab =eM = exp(1)=) είναι μεγαλύτερη του tol που είναι η ακρίβεια που θέλουμε που βγαίνει από =tol = 10^-(l + 1)=.
+Το n διπλασιάζεται σε κάθε, επανάληψη που είναι πολύ πιο αποτελεσματικό από την αύξηση του κατά ένα.
+
+Αποτέλεσμα συνάρτησης με διπλασιασμό n:
+#+BEGIN_SRC
+>> approximate(9)
+Matlab's number: 	2.718281828459
+Approximated number: 	2.718281828380
+Accuracy to point: 	          ^
+Number of iterations: 	35
+#+END_SRC
+
+Αποτέλεσμα συνάρτησης με αύξηση n κατα ένα:
+#+BEGIN_SRC
+>> approximate(9)
+Matlab's number: 	2.718281828459
+Approximated number: 	2.718281828360
+Accuracy to point: 	          ^
+Number of iterations: 	66953800
 #+END_SRC

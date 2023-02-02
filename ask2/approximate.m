@@ -7,8 +7,7 @@ function approximate(l)
 
     eM = exp(1);       % Matlab's approximation of e
     e = 0;             % Approximated value of e
-    n = double(2);             % Initialize n
-    % n = 136;
+    n = 2;             % Initialize n
     count = 1;         % Counter for number of iterations
     tol = 10^-(l+1);   % Tolerance for the approximation
 
@@ -16,20 +15,13 @@ function approximate(l)
     while(abs(eM - e) > tol)
         e = (1 + 1/n)^n;     % Approximate e using formula
         n = n * 2;           % Double the value of n in each iteration
-        % n = n + 1;
+
         count = count + 1;   % Increment the iteration count
-        if(count == 54)
-            break
-        end
     end
 
-    disp(n);
-    disp(1/n)
-    disp(vpa(1 + 1/n))
     % Output the results
     fprintf("Matlab's number: \t%.*f\n", (l + 3), eM);
     fprintf("Approximated number: \t%.*f\n", (l + 3), e);
     fprintf("Accuracy to point: \t%s^\n", blanks(l + 1));
-    % fprintf("Number of iterations: \t%d\n", (n - 136));
     fprintf("Number of iterations: \t%d\n", count);
 end

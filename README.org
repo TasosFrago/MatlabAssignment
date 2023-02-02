@@ -88,34 +88,48 @@ end
 Ο υπολογισμός του e με τον τύπο
 #+BEGIN_CENTER
 $e = \lim_{n\rightarrow \infty}(1 + \frac{1}{n})^n$
-#+END_CENTER
-γίνεται στο *Matlab*:
+#+end_center
+γίνεται στο *matlab*:
 
-#+BEGIN_SRC matlab
-while(abs(eM - e) > tol)
-    e = (1 + 1/n)^n;     % Approximate e using formula
-    n = n * 2;           % Double the value of n in each iteration
-    count = count + 1;   % Increment the iteration count
+#+begin_src matlab
+while(abs(em - e) > tol)
+    e = (1 + 1/n)^n;     % approximate e using formula
+    n = n * 2;           % double the value of n in each iteration
+    count = count + 1;   % increment the iteration count
 end
-#+END_SRC
+#+end_src
 
-Η λούπα τρέχει όσο η απόλυτη διαφορά του e που υπολογίζουμε με του eM (που είναι το e που δίνεται απο το Matlab matlab =eM = exp(1)=) είναι μεγαλύτερη του tol που είναι η ακρίβεια που θέλουμε που βγαίνει από =tol = 10^-(l + 1)=.
-Το n διπλασιάζεται σε κάθε, επανάληψη που είναι πολύ πιο αποτελεσματικό από την αύξηση του κατά ένα.
+η λούπα τρέχει όσο η απόλυτη διαφορά του e που υπολογίζουμε με του em (που είναι το e που δίνεται απο το matlab matlab =em = exp(1)=) είναι μεγαλύτερη του tol που είναι η ακρίβεια που θέλουμε που βγαίνει από =tol = 10^-(l + 1)=.
+το n διπλασιάζεται σε κάθε, επανάληψη που είναι πολύ πιο αποτελεσματικό από την αύξηση του κατά ένα.
 
-Αποτέλεσμα συνάρτησης με διπλασιασμό n:
-#+BEGIN_SRC
+αποτέλεσμα συνάρτησης με διπλασιασμό n:
+#+begin_src
 >> approximate(9)
-Matlab's number: 	2.718281828459
-Approximated number: 	2.718281828380
-Accuracy to point: 	          ^
-Number of iterations: 	35
-#+END_SRC
+matlab's number: 	2.718281828459
+approximated number: 	2.718281828380
+accuracy to point: 	          ^
+number of iterations: 	35
+#+end_src
 
-Αποτέλεσμα συνάρτησης με αύξηση n κατα ένα:
-#+BEGIN_SRC
+αποτέλεσμα συνάρτησης με αύξηση n κατα ένα:
+#+begin_src
 >> approximate(9)
-Matlab's number: 	2.718281828459
-Approximated number: 	2.718281828360
-Accuracy to point: 	          ^
-Number of iterations: 	66953800
-#+END_SRC
+matlab's number: 	2.718281828459
+approximated number: 	2.718281828360
+accuracy to point: 	          ^
+number of iterations: 	66953800
+#+end_src
+
+*** Προβλήματα με την άσκηση
+
+Το πρόβλημα με την συνάρτηση αυτή είναι ότι δεν δουλεύει για =l > 15=. Αυτό συμβαίνει γιατί το n γίνεται πολύ μεγάλο και έτσι το =1/n= είναι τόσο μικρό που το *Matlab* στην πρόσθεση του με το 1 αγνοεί τα δεκαδικά, με αποτέλεσμα το e να γίνει 1.
+
+Μια λύση για να αντιμετοπίσουμε το πρόβλημα αυτό είναι να χρησιμοποιήσουμε την συνάρτηση =vpa()= του [[https://www.mathworks.com/help/symbolic/][*Symbolic Math Toolbox*]] για να κάνουμε την πράξη. Βέβαια κάνει την συνάρτηση πολύ πιο αργή.
+
+Ο πιο αποτελεσματικός τρόπος είναι να χρησιμοποιήσουμε τον τύπο:
+#+BEGIN_CENTER
+$\Large e = \sum_{n = 0}^{\infty} \frac{1}{n!}$
+#+END_CENTER
+για να υλοποιήσουμε την συνάρτηση.
+
+Στο αρχείο =fasterApproximation.m= υλοποιήται αυτος ο τύπος και μπορεί να υπολογίσει μέχρι 50 δεκαδικά του e με 19 επαναλήψεις.

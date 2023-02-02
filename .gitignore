@@ -1,2 +1,7 @@
 ltximg/
 *.html
+*.aux
+*.toc
+*.log
+*.tex
+*.out

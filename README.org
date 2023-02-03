@@ -92,7 +92,7 @@ end
 
 Ο υπολογισμός του e με τον τύπο
 #+BEGIN_CENTER
-$e = \lim_{n\rightarrow \infty}(1 + \frac{1}{n})^n$
+$e = \lim_{n\rightarrow \infty}(1 + \frac{1}{n})^{n}$
 #+end_center
 γίνεται στο *matlab*:
 
@@ -140,3 +140,54 @@ $\Large e = \sum_{n = 0}^{\infty} \frac{1}{n!}$
 Στο αρχείο  =fasterApproximation.m= υλοποιήται αυτος ο τύπος και μπορεί να υπολογίσει μέχρι 50 δεκαδικά του e με 19 επαναλήψεις.
 
 ** Άσκηση 3
+
+*** Μέθοδος Επίλυσης
+
+Για την λύση του προβλήματος αυτού θα χρειαστούμε να φτιάξουμε αρχικά ενα διάνυσμα 26 θέσεων. Κάθε θέση του διανύσματος θα αντιπροσοπεύει ένα γράμμα του λατινικού αλφαβήτου και θα περιέχει το πλήθος εμφάνισης του.
+
+Θα το αρχηκοποιήσουμε με μηδενικά
+#+BEGIN_SRC matlab
+alphabet = zeros(1, 26);
+#+END_SRC
+
+Έπειτα θα διατρέξουμε κάθε χαρακτήρα της ακολουθίας χαρακτήρων και θα ελέγχουμε αν η τιμή ascii του είναι μεταξύ του 65 - 90 ή 97 - 122. Μεταξύ του 65 - 90 είναι οι τα κεφαλαία γράμματ και του 97 - 122 είναι τα μικρά. Έτσι διασφαλίζουμε οτι αγνοούμε όλους τους άλλους χαρακτήρες. Αφού ελένξουμε τους χαρακτήρες κάνουμε την αναγκαία αφαίρεση για να βάλουμε τον κάθε χαρακτήρα στο διάνυσμα alphabet.
+
+#+begin_src matlab
+% Scan the input string `str`
+for i = 1:strlength(str)
+
+    % If a character in the string is between ASCII values 65 and 90 (upper case letters),
+    % its count is increased in the `alphabet` array at the corresponding index (`str(i) - 64`).
+    if(str(i) >= 65 && str(i) <= 90)
+        alphabet(str(i) - 64) = alphabet(str(i) - 64) + 1;
+
+    % If a character is between ASCII values 97 and 122 (lower case letters),
+    % its count is increased in the `alphabet` array at the corresponding index (`str(i) - 96`).
+    elseif (str(i) >= 97 && str(i) <= 122)
+        alphabet(str(i) - 96) = alphabet(str(i) - 96) + 1;
+    end
+end
+#+end_src
+
+Τέλος διατρέχουμε το διάνυσμα alphabet και εκτυπώνουμε τα γράμματα και πόσες φορές εμφανίζονται.
+
+#+begin_src matlab
+% Output the number of occurrences of each letter in the string
+for i = 1:26
+    if(alphabet(i) ~= 0)
+        fprintf("Found %c: %d times \n", (i+96), alphabet(i));
+    end
+end
+#+end_src
+
+Παράδειγμα χρήσης συνάρτησης για ακολουθία χαρακτήρων 'Hello World':
+#+begin_src shell
+>> findOccurances('Hello World')
+Found d: 1 times
+Found e: 1 times
+Found h: 1 times
+Found l: 3 times
+Found o: 2 times
+Found r: 1 times
+Found w: 1 times
+#+end_src

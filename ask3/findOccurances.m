@@ -17,28 +17,29 @@ function findOccurances(str)
 %     Found w: 1 times 
 %=============================================================================================
 
-    % Create an array `res` with 26 elements, each representing a letter of the alphabet.
+    % Create an array `alphabet` with 26 elements, each representing a letter of the alphabet.
     % The array is initialized to zero.
-    res = zeros(1,26);
+    alphabet = zeros(1,26);
 
     % Scan the input string `str`
     for i = 1:strlength(str)
+
         % If a character in the string is between ASCII values 65 and 90 (upper case letters),
-        % its count is increased in the `res` array at the corresponding index (`str(i) - 64`).
+        % its count is increased in the `alphabet` array at the corresponding index (`str(i) - 64`).
         if(str(i) >= 65 && str(i) <= 90)
-            res(str(i) - 64) = res(str(i) - 64) + 1;
+            alphabet(str(i) - 64) = alphabet(str(i) - 64) + 1;
 
         % If a character is between ASCII values 97 and 122 (lower case letters),
-        % its count is increased in the `res` array at the corresponding index (`str(i) - 96`).
+        % its count is increased in the `alphabet` array at the corresponding index (`str(i) - 96`).
         elseif (str(i) >= 97 && str(i) <= 122)
-            res(str(i) - 96) = res(str(i) - 96) + 1;
+            alphabet(str(i) - 96) = alphabet(str(i) - 96) + 1;
         end
     end
 
     % Output the number of occurrences of each letter in the string
     for i = 1:26
-        if(res(i) ~= 0)
-            fprintf("Found %c: %d times \n", (i+96), res(i));
+        if(alphabet(i) ~= 0)
+            fprintf("Found %c: %d times \n", (i+96), alphabet(i));
         end
     end
 end

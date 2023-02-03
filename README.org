@@ -1,4 +1,6 @@
 #+AUTHOR: Tasos Fragkopoulos
+#+TITLE: Εργασία Εξαμήνου Μαθηματικό Λογισμικό
+#+OPTIONS: tex:dvipng
 
 * Εργασία Εξαμήνου Μαθηματικό Λογισμικό
 
@@ -71,12 +73,15 @@ R(3) = (-AB + AC + BC)/2;
 
 #+BEGIN_SRC matlab
 function circle(x, y, r)
-% CIRCLE -
-%
-    th = 0:pi/50:2*pi;
-    xunit = r * cos(th) + x;
-    yunit = r * sin(th) + y;
-    plot(xunit, yunit);
+% CIRCLE - This function plots a circle centered at (x, y) with radius r.
+%   The input arguments x, y and r are the x and y-coordinates of the center of the circle and its radius, respectively.
+%   The function calculates the x and y-coordinates of 50 points evenly spaced around the circumference of the circle,
+%   using the parametric equation of a circle. The function then plots the circle using the 'plot' function.
+
+    th = 0:pi/50:2*pi;         % Theta range for 50 points
+    xunit = r * cos(th) + x;   % x-coordinates of 50 points on circle
+    yunit = r * sin(th) + y;   % y-coordinates of 50 points on circle
+    plot(xunit, yunit);        % Plot the circle
 end
 #+END_SRC
 Σε αυτή ορίζουμε το διάνυσμα th που έχει τις τιμές από 0 μέχρι $2\pi$ με βήμα $\frac{\pi}{50}$ και μετά υπολογίζουμε τις x και y συντεταγμένες του κύκλου στις xunit και yunit αντίστοιχα.
@@ -132,4 +137,6 @@ $\Large e = \sum_{n = 0}^{\infty} \frac{1}{n!}$
 #+END_CENTER
 για να υλοποιήσουμε την συνάρτηση.
 
-Στο αρχείο =fasterApproximation.m= υλοποιήται αυτος ο τύπος και μπορεί να υπολογίσει μέχρι 50 δεκαδικά του e με 19 επαναλήψεις.
+Στο αρχείο  =fasterApproximation.m= υλοποιήται αυτος ο τύπος και μπορεί να υπολογίσει μέχρι 50 δεκαδικά του e με 19 επαναλήψεις.
+
+** Άσκηση 3

@@ -325,7 +325,7 @@ end
 Αναφορές
 #+end_center
 #+begin_center
-Stiff, J., & Somani, S. (n.d.). FAQ | MATLAB Wiki | Fandom. MATLAB Wiki. Retrieved February 2, 2023, from https://matlab.fandom.com/wiki/FAQ#Why_is_0.3_-_0.2_-_0.1_(or_similar)_not_equal_to_zero?
+Stiff, J., & Somani, S. (n.d.). FAQ | MATLAB Wiki | Fandom. MATLAB Wiki. Retrieved February 2, 2023, from [[https://matlab.fandom.com/wiki/FAQ#Why_is_0.3_-_0.2_-_0.1_(or_similar)_not_equal_to_zero?]]
 #+end_center
 
 

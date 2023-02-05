@@ -8,18 +8,19 @@ function rlc()
 
     Zf = @(x) sqrt(R^2 + (x*L - 1./(x*C)).^2);
     phif = @(x) atan((x*L - 1./(x*C))/ R);
+    Z = Zf(w);
 
-    Z = mean(Zf(w));
-    phi = mean(phif(w));
+    % Z = mean(Zf(w));
+    % phi = mean(phif(w));
 
-    VRf = @(x) (V*R)./Zf(x);
-    VLf = @(x) (V*L*x)./Zf(x);
-    VCf = @(x) V.*(1./((x*C).*Zf(x)));
+    % VRf = @(x) (V*R)./Zf(x);
+    % VLf = @(x) (V*L*x)./Zf(x);
+    % VCf = @(x) V.*(1./((x*C).*Zf(x)));
 
-    VR = VRf(w);
-    VL = VLf(w);
-    VC = VCf(w);
-    max(VL)
+    % VR = VRf(w);
+    % VL = VLf(w);
+    % VC = VCf(w);
+    % max(VL)
 
     % syms x;
     % zf = Zf(x);
@@ -30,15 +31,17 @@ function rlc()
     % ex_point = solve(diff(vlf, x)==0, x);
     % double(ex_point)
 
-    % hold on
+    hold on
     % ylim([-400 400]);
     % xlim([-1000 1000]);
-    % plot(w, VR);
+    ylim([0 3500]);
+    xlim([-3000 3000]);
+    plot(w, Z);
     % plot(w, VL);
     % plot(w, VC);
-    % grid on;
-    % line([0,0], ylim, 'Color', 'k', 'LineWidth', 0.5); % Draw line for Y axis.
-    % line(xlim, [0,0], 'Color', 'k', 'LineWidth', 0.5); % Draw line for X axis.
-    % hold off
+    grid on;
+    line([0,0], ylim, 'Color', 'k', 'LineWidth', 0.5); % Draw line for Y axis.
+    line(xlim, [0,0], 'Color', 'k', 'LineWidth', 0.5); % Draw line for X axis.
+    hold off
 
 end

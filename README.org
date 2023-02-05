@@ -1,6 +1,7 @@
 #+AUTHOR: Tasos Fragkopoulos
 #+TITLE: Εργασία Εξαμήνου Μαθηματικό Λογισμικό
 #+OPTIONS: tex:dvipng
+#+Startup: latexpreview
 
 * Εργασία Εξαμήνου Μαθηματικό Λογισμικό
 
@@ -108,7 +109,7 @@ end
 το n διπλασιάζεται σε κάθε, επανάληψη που είναι πολύ πιο αποτελεσματικό από την αύξηση του κατά ένα.
 
 αποτέλεσμα συνάρτησης με διπλασιασμό n:
-#+begin_src
+#+begin_src matlab
 >> approximate(9)
 matlab's number: 	2.718281828459
 approximated number: 	2.718281828380
@@ -117,7 +118,7 @@ number of iterations: 	35
 #+end_src
 
 αποτέλεσμα συνάρτησης με αύξηση n κατα ένα:
-#+begin_src
+#+begin_src matlab
 >> approximate(9)
 matlab's number: 	2.718281828459
 approximated number: 	2.718281828360
@@ -181,7 +182,7 @@ end
 #+end_src
 
 Παράδειγμα χρήσης συνάρτησης για ακολουθία χαρακτήρων 'Hello World':
-#+begin_src shell
+#+begin_src matlab
 >> findOccurances('Hello World')
 Found d: 1 times
 Found e: 1 times
@@ -191,3 +192,140 @@ Found o: 2 times
 Found r: 1 times
 Found w: 1 times
 #+end_src
+
+** Άσκηση 4
+
+*** Μέθοδος Επίλυσης
+
+Για να φτιάξουμε το αυτόματο μηχάνημα πρέπει να κάνουμε τρία βασικά πράγματα σε ολό το πρόγραμμα:
+
+    - Να εκτυπώσουμε στον χρήστη τις επιλογές που μπορεί να κάνει
+
+    - Να διαβάσουμε την επιλογή αυτή
+
+    - Να έχουμε κάποια λογική πάνω στις επιλογές του χρήστη
+
+Οπότε θα χρειαστεί να τα εφαρμόσουμε για την επιλογή εισιτηρίου, την επιλογή αριθμού εισιτηρίων και την επιλογή κερμάτων για προσθήκη.
+
+Αρχικά θα φτιάξουμε την επιλογή των εισιτηρίων. Θα έχουμε ένα =while loop= που θα τρέχει για πάντα και θα εκτυπώνει τα εισιτήρια που μπορεί να επιλέξει ο χρήστης, θα πέρνει την επιλόγη και θα ελέγχει αμα είναι έγκυρη για να σταματήσει. Διαφορετικά θα εκτυπώνει μήνυμα στο χρήστη για μη έγκυρη επιλογή και θα ξανα τρέχει.
+
+#+begin_src matlab
+% Get user's choice of ticket
+while(1)
+    % Output ticket options
+    fprintf("(1): Standar  1.40€.\n");
+    fprintf("(2): Discount 0.60€.\n");
+    fprintf("(3): Daily    4.50€.\n");
+    fprintf("(4): Weekly   9.00€.\n");
+
+    % Get user's ticket choise
+    ticketChoice = str2double(input('Choose your ticket from the list.(1 - 4): ', 's'));
+
+    % Check if valid ticket choise
+    if(ticketChoice >= 1 & ticketChoice <= 4)
+        break;
+    else
+        % Output error if choise not valid
+        fprintf("\nWrong option. Please choose one of this options:\n");
+    end
+end
+#+end_src
+
+Όταν πέρνουμε την επιλογή απο το χρήστη δήνουμε στην συνάρτηση =input()= ως δεύτερο όρισμα το 's' για να πάρει την είσοδο του χρήστη ως ακολουθία χαρακτήρων και να μην κάνει καμία πράξη με αυτή. Έπειτα χρησιμοποιούμε την =str2double()= για να κάνουμε την ακολουθία αριθμό.
+
+Μετά θα κάνουμε κάτι παρόμοιο για να την επιλογή αριθμού εισιτηρίων.
+
+#+begin_src matlab
+% Get user's number of tickets
+while(1)
+    % Get user's choise
+    numberOfTickets = str2double(input('How many tickets do you want? ', 's'));
+
+    % Check if choise is valid
+    if(numberOfTickets > 0)
+        break
+    else
+        % Output error if choise not valid
+        fprintf("\nNot a valid number of tickets. Please put a valid number.\n");
+    end
+end
+#+end_src
+
+Και παρόμοιο για την είσοδο των χρημάτων.
+
+#+begin_src matlab
+while(1)
+    % Output price owed and available coins
+    fprintf("You owe %.2f€. You can insert:\n", priceDifference);
+    fprintf("\t(1): 10 euro note\n");
+    fprintf("\t(2): 5 euro note\n");
+    fprintf("\t(3): 2 euro coin\n");
+    fprintf("\t(4): 1 euro coin\n");
+    fprintf("\t(5): 50 cent euro coin\n");
+    fprintf("\t(6): 20 cent euro coin\n");
+    fprintf("\t(7): 10 cent euro coin\n");
+    fprintf("\t(8): 5 cent euro coin\n");
+
+    % Get user's inserted money
+    moneyInserted = str2double(input('Choose money to insert.(1 - 8): ', 's'));
+
+    % Check if choice is valid
+    if(moneyInserted >= 1 & moneyInserted <= 8)
+        priceDifference = round(priceDifference - money(moneyInserted), 2);
+
+        if(~priceDifference)
+            break;
+        elseif(priceDifference < 0)
+            fprintf("You inserted more money. Here's the difference:\n");
+            priceDifference = - priceDifference;
+
+            for i = 1:length(money)
+                if(money(i) == priceDifference)
+                    fprintf("\tYou got %.2f€.\n", money(i));
+                    priceDifference = round(priceDifference - money(i), 2);
+                    break;
+                elseif(priceDifference > money(i))
+                    fprintf("\tYou got %.2f€.\n", money(i));
+                    priceDifference = round(priceDifference - money(i), 2);
+                end
+            end
+            break;
+        end
+    else
+        % Output error if choice not valid
+        fprintf("\nWrong option. Please choose one of this options:\n");
+    end
+end
+#+end_src
+
+Πριν την επανάληψη αυτή, βρίσκουμε πόσα χρήματα χρωστάει ο χρήστης που βγαίνει από την τιμή του εισητιρίου επί τον αριθμό τους. Τις τιμές των εισιτηρίων και τα επιτρεπούμενα χρήματα τα έχουμε σε ένα διάνυσμα.
+
+#+begin_src matlab
+  % List of ticket prices
+  tickets = [1.40 0.6 4.5 9];
+  % List of accepted coins
+  money = [10 5 2 1 0.5 0.2 0.1 0.05];
+
+  % Find price user has to pay
+  priceDifference =  tickets(ticketChoice) * numberOfTickets;
+#+end_src
+
+Για την τελευταία επανάληψη ελέγχουμε αν τα λεφτά που δώθηκαν είναι είναι ίσα με τα οφειλούμενα για να τελειώσουμε το πρόγραμμα. Αν είναι λιγότερα το πρόγραμμα ξανα τρέχει και ο χρήστης μπορεί να βάλει και άλλα χρήματα στο μηχάνημα. Αν βάλει περισσότερα τότε πρέπει το μηχάνημα να δώσει ρέστα. Οπότε διατρέχουμε το διάνυσμα με τα χρήματα από το μεγαλύτερο προς το μικρότερο. Αφαιρούμε από τα λεφτά που χρωστάει το μηχάνημα τα λεφτά της κάθε επανάληψης και ελέγχουμε αν είναι ίσα με το χρήμα της κάθε επανάληψης για να τελείωσει το πρόγραμμα ή αν είναι μεγαλύτερο για να συνεχίσει τις επαναλήψης.
+
+Είναι σημαντικό να αναφαίρουμε πως κάθε φορά που κάνουμε αφαίρεση των χρημάτων χρησιμοποιούμε την συνάρτηση =round()= για στρογκυλοποιήσουμε στα δύο δεκαδικά γιατί οι πράξεις με δεκαδικούς στο *Matlab* δεν είναι ακριβείς και για αυτό δεν μπορούμε να πάρουμε μηδέν[1].
+
+** Άσκηση 5
+
+** Άσκηση 6
+
+** Άσκηση 7
+
+
+#+begin_center
+Αναφορές
+#+end_center
+#+begin_center
+Stiff, J., & Somani, S. (n.d.). FAQ | MATLAB Wiki | Fandom. MATLAB Wiki. Retrieved February 2, 2023, from https://matlab.fandom.com/wiki/FAQ#Why_is_0.3_-_0.2_-_0.1_(or_similar)_not_equal_to_zero?
+#+end_center
+
+

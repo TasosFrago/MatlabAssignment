@@ -1,5 +1,5 @@
 function rlc()
-    w = [-20000*pi:pi:20000*pi];
+    w = [-20000*pi:20000*pi];
 
     R = 2500;
     L = 5e-3;
@@ -13,13 +13,13 @@ function rlc()
     % Z = mean(Zf(w));
     % phi = mean(phif(w));
 
-    % VRf = @(x) (V*R)./Zf(x);
-    % VLf = @(x) (V*L*x)./Zf(x);
-    % VCf = @(x) V.*(1./((x*C).*Zf(x)));
+    VRf = @(x) (V*R)./Zf(x);
+    VLf = @(x) (V*L*x)./Zf(x);
+    VCf = @(x) V.*(1./((x*C).*Zf(x)));
 
-    % VR = VRf(w);
-    % VL = VLf(w);
-    % VC = VCf(w);
+    VR = VRf(w);
+    VL = VLf(w);
+    VC = VCf(w);
     % max(VL)
 
     % syms x;
@@ -34,10 +34,12 @@ function rlc()
     hold on
     % ylim([-400 400]);
     % xlim([-1000 1000]);
-    ylim([0 3500]);
-    xlim([-3000 3000]);
-    plot(w, Z);
-    % plot(w, VL);
+    ylim([-40 40]);
+    xlim([-100 100]);
+    % ylim([0 3500]);
+    % xlim([-3000 3000]);
+    % plot(w, VR);
+    plot(w, VL);
     % plot(w, VC);
     grid on;
     line([0,0], ylim, 'Color', 'k', 'LineWidth', 0.5); % Draw line for Y axis.

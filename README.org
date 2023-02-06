@@ -95,7 +95,7 @@ end
 #+BEGIN_CENTER
 $e = \lim_{n\rightarrow \infty}(1 + \frac{1}{n})^{n}$
 #+end_center
-γίνεται στο *matlab*:
+γίνεται στο *matlab* με την ακόλουθη επανάληψη:
 
 #+begin_src matlab
 while(abs(em - e) > tol)
@@ -105,10 +105,10 @@ while(abs(em - e) > tol)
 end
 #+end_src
 
-η λούπα τρέχει όσο η απόλυτη διαφορά του e που υπολογίζουμε με του em (που είναι το e που δίνεται απο το matlab matlab =em = exp(1)=) είναι μεγαλύτερη του tol που είναι η ακρίβεια που θέλουμε που βγαίνει από =tol = 10^-(l + 1)=.
-το n διπλασιάζεται σε κάθε, επανάληψη που είναι πολύ πιο αποτελεσματικό από την αύξηση του κατά ένα.
+Η λούπα τρέχει όσο η απόλυτη διαφορά του e που υπολογίζουμε με του em (που είναι το e που δίνεται απο το matlab matlab =em = exp(1)=) είναι μεγαλύτερη του tol που είναι η ακρίβεια που θέλουμε που βγαίνει από =tol = 10^-(l + 1)=.
+Το n διπλασιάζεται σε κάθε, επανάληψη που είναι πολύ πιο αποτελεσματικό από την αύξηση του κατά ένα.
 
-αποτέλεσμα συνάρτησης με διπλασιασμό n:
+Αποτέλεσμα συνάρτησης με διπλασιασμό n:
 #+begin_src matlab
 >> approximate(9)
 matlab's number: 	2.718281828459
@@ -117,7 +117,7 @@ accuracy to point: 	          ^
 number of iterations: 	35
 #+end_src
 
-αποτέλεσμα συνάρτησης με αύξηση n κατα ένα:
+Αποτέλεσμα συνάρτησης με αύξηση n κατα ένα:
 #+begin_src matlab
 >> approximate(9)
 matlab's number: 	2.718281828459
@@ -318,6 +318,86 @@ end
 
 ** Άσκηση 6
 
+*** Μέθοδος Επίλυσης
+
+Για να εφαρμόσουμε την μέθοδο ορθοκανονικοποιήσης Gram-Schmidt με κώδικα χρειάζεται απλά να εφαρμόσουμε τα βήματα του αλγορίθμου που δήνονται στην εκφώνηση και να υλοποιήσουμε τις μαθηματικές πράξεις που δήνονται.
+
+Αρχικά θα χρειαστεί να αρχικοποιήσουμε τον πίνακα U, πού θα είναι το αποτέλεσμα της συνάρτησης, με μηδενικά. Οι διαστάσεις του θα είναι ίδιες με τον πίνακα V που πέρνουμε σαν είσοδο.
+
+#+begin_src matlab
+[m, n] = size(V);	% Get the dimensions of the input matrix V
+U = zeros(m, n);	% Initialize the output matrix U with zeros
+#+end_src
+
+Κάθε στήλη του πίνακα V αποτελεί ένα διάνυσμα $a_1, a_2, a_3,...,a_n$. Το αντίστοιχο ισχύει για τον πίνακα U. Οπότε για το βήμα 1 του αλγορίθμου θα θέσουμε $u_1 = a_1$ έτσι:
+
+#+begin_src matlab
+U(:, 1) = V(:, 1);	% The first column of U is equal to the first column of V
+#+end_src
+
+Για το βήμα 2 θα έχουμε μία λούπα που σε κάθε επανάληψη θα υπολογίζει κάθε διάνυσμα. Θα τρέχει (n - 1) φορές γιατί έχουμε ήδη βρει το πρώτο διάνυσμα. Μέσα στην λούπα θα υλοποιήσουμε τον τύπο:
+#+begin_center
+$u_{i+1} = a_{i+1} - \sum_{k=1}^{i}\frac{\left \langle a_{i+1}, u_k \right \rangle}{\left \| u_k \right \|^2}u_k$
+#+end_center
+
+_*Σημείωση*_:Υπάρχει λάθος στον τύπο της εκφώνησης. Μέσα στο άθροισμα όλα τα u θα είναι τα u k. Αλλιώς θα προσθέτουμε i φορές το ίδιο πράγμα.[2]
+
+Πρώτα θα υπολογίσουμε το εσωτερικό του αθροίσματος με την βοηθητική συνάρτηση =proj(v, u)=:
+
+#+begin_src matlab
+function [ res ] = proj(v, u)
+% PROJ - This function calculates the projection of a vector 'v' onto another vector 'u'.
+% Input:
+%   v -> m x 1 vector in R^m
+%   u -> m x 1 vector in R^m
+%
+% Output:
+%   res - m x 1 vector, the projection of 'v' onto 'u'
+%======================================================================================
+
+    dotProduct = (v)'*u;	% Calculate the dot product of 'v' and 'u'
+    normSquared = (u)'*u;	% Calculate the squared norm of 'u'
+    
+    % Calculate the projection of 'v' onto 'u'
+    res = (dotProduct / normSquared) * u;
+end
+#+end_src
+
+Για να υπολογίσουμε το εσωτερικό γινόμενο θα κάνουμε πολλαπλασιασμό αναστροφου πίνακα με πίνακα που είναι πολύ πιο αποτελεσματικό και γρήγορο από το να βρήσκαμε το άθροισμα όλων των γινομένων στοιχείων προς στοιχείο των δύο πινάκων. Αυτό γιατί οι ενσωματομένοι τελεστές ='= και =*= πινάκων είναι πιο αποτελεσματικοί[3].
+Για το τετράγωνο της νόρμας του $u_i$ άμα κάνουμε τις απλοποιήσει μπορούμε να καταλήξουμε:
+#+begin_center
+$\left \| u_i \right \|^2 = \sqrt{u_1^2 + u_2^2 + ... + u_n^2}^2 = u_1^2 + u_2^2 + ... + u_n^2 = u \cdot u$
+#+end_center
+Άρα μπορούμε να βρούμε το εσωτερικό γινόμενο του u με το u με τον ίδιο τρόπο.
+Τέλος στην συνάρτηση θα κάνουμε την διαίρεση μεταξύ τους και τον πολαπλασιασμό με το u και θα το επιστρέψουμε.
+
+Επιστρέφοντας στην βασική συνάρτηση θα βρούμε το αθροισμα μέσω μίας επανάληψης απο k = 1 μέχρι i, όλο αυτο μέσα στην βασική επανάληψη που αναφέρθηκε παραπάνω.
+
+#+begin_src matlab
+% Loop through the remaining columns of V
+for i=1:n-1
+    s = 0; % Initialize the variable 's' to zero
+
+    % Loop through the columns of U that have been computed so far
+    for k = 1:i
+        % Add the projection of V(:, i+1) onto U(:, k) to 's'
+        s = s + proj(V(:, i+1), U(:, k));
+    end
+
+    % The next column of U is equal to the next column of V minus the projection
+    U(:, i+1) = V(:, i+1) - s;
+end
+#+end_src
+
+Στο τέλος κάθε επανάληψης θα κάνουμε την αφαίρεση του $a_{i+1}$ με το άθροισμα που υπολογίσαμε.
+
+#+begin_src matlab
+% The next column of U is equal to the next column of V minus the projection
+U(:, i+1) = V(:, i+1) - s;
+#+end_src
+
+Εκτός απο το αρχείο =gramSchmidt.m= της βασικής συνάρτησης υπάρχει το αρχείο =example.m= που τρέχει την συνάρτηση με δοκιμαστική βάση $R^3$ που δήνεται από την εκφώνηση, καθώς και υπολογίζει των χρόνο που χρειάστηκε για να τρέξει μέσω της συνάρτησης =timeit()=.
+
 ** Άσκηση 7
 
 
@@ -325,7 +405,10 @@ end
 Αναφορές
 #+end_center
 #+begin_center
-Stiff, J., & Somani, S. (n.d.). FAQ | MATLAB Wiki | Fandom. MATLAB Wiki. Retrieved February 2, 2023, from [[https://matlab.fandom.com/wiki/FAQ#Why_is_0.3_-_0.2_-_0.1_(or_similar)_not_equal_to_zero?]]
+[1] Stiff, J., & Somani, S. (n.d.). FAQ | MATLAB Wiki | Fandom. MATLAB Wiki. Retrieved February 2, 2023, from [[https://matlab.fandom.com/wiki/FAQ#Why_is_0.3_-_0.2_-_0.1_(or_similar)_not_equal_to_zero?]]
+[2] Harvey Mudd College. (2019). Gram-Schmidt Method. Gram-Schmidt Method – Calculus Tutorials. Retrieved February 6, 2023, from https://math.hmc.edu/calculus/hmc-mathematics-calculus-online-tutorials/linear-algebra/gram-schmidt-method/
+[3] Mathworks. (2012, September 19). Vectorization - MATLAB & Simulink. MathWorks. Retrieved February 6, 2023, from https://www.mathworks.com/help/matlab/matlab_prog/vectorization.html
+
 #+end_center
 
 

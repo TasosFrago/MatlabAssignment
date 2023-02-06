@@ -1,57 +1,46 @@
 function [ U ] = gramSchmidt(V)
-    [m, n] = size(V);
-    U = zeros(m, n);
-    U(:, 1) = V(:, 1);
+% GRAMSCHMIDT - This function computes the orthonormal basis of a set of vectors 'V' 
+% using the Gram-Schmidt process.
+% Input:
+%   V -> m x n matrix, where each column is a vector in R^m
+%
+% Output:
+%   U -> m x n matrix, where each column is an orthonormal vector in R^m
+%====================================================================================
 
+    [m, n] = size(V);	% Get the dimensions of the input matrix V
+    U = zeros(m, n);	% Initialize the output matrix U with zeros
+    U(:, 1) = V(:, 1);	% The first column of U is equal to the first column of V
+    
+    % Loop through the remaining columns of V
     for i=1:n-1
-        s = 0;
-        for k=1:floor(i/2)
-            % replace k with i if not correct version
-            % s = s + ((sum(V(:, i+1) .* U(:, k))) / (sum(U(:, k).^2))) * U(:, k);
+        s = 0; % Initialize the variable 's' to zero
+
+        % Loop through the columns of U that have been computed so far
+        for k = 1:i
+            % Add the projection of V(:, i+1) onto U(:, k) to 's'
             s = s + proj(V(:, i+1), U(:, k));
-            s = s + proj(V(:, i+1), U(:, k+floor(i/2)));
         end
-        if(mod(i, 2))
-            s = s + proj(V(:, i+1), U(:, i));
-        end
-        % for k=1:i
-        %     s = s + ((sum(V(:, i+1) .* U(:, k))) / (sum(U(:, k) .^ 2))) * U(:, k);
-        % end
+
+        % The next column of U is equal to the next column of V minus the projection
         U(:, i+1) = V(:, i+1) - s;
     end
 
 end
 
 function [ res ] = proj(v, u)
-    % m = size(v, 1);
+% PROJ - This function calculates the projection of a vector 'v' onto another vector 'u'.
+% Input:
+%   v -> m x 1 vector in R^m
+%   u -> m x 1 vector in R^m
+%
+% Output:
+%   res - m x 1 vector, the projection of 'v' onto 'u'
+%======================================================================================
 
-    % vecProd = v.*u;
-    % vecSq = u.^2;
-
-    dotProduct = (v)'*u;
-    normSquared = (u)'*u;
-
-    % dotProduct = sum(v.*u);
-    % normSquared = sum(u.^2);
-
-    % dotProduct = 0;
-    % normSquared = 0;
-
-
-    % for i = 1:m
-    %     dotProduct = dotProduct + vecProd(i);
-    %     normSquared = normSquared + vecSq(i);
-    % end
-    % for i = 1:floor(m/2)
-    %     dotProduct = dotProduct + vecProd(i);
-    %     dotProduct = dotProduct + vecProd(i+floor(m/2));
-    %     normSquared = normSquared + vecSq(i);
-    %     normSquared = normSquared + vecSq(i+floor(m/2));
-    % end
-    % if(mod(m, 2))
-    %     dotProduct = dotProduct + vecProd(m);
-    %     normSquared = normSquared + vecSq(m);
-    % end
-
+    dotProduct = (v)'*u;	% Calculate the dot product of 'v' and 'u'
+    normSquared = (u)'*u;	% Calculate the squared norm of 'u'
+    
+    % Calculate the projection of 'v' onto 'u'
     res = (dotProduct / normSquared) * u;
 end

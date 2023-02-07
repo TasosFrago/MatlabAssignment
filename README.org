@@ -422,10 +422,12 @@ $$p_{n+1} =\Large\begin{bmatrix}x_n - \Large\frac{f\frac{\partial g}{\partial y}
 
 Επιπλέον για την μέθοδο θα χρειαστούμε μια αρχική προσέγγιση. Για να την βρούμε θα κάνουμε τα γραφήματα και θα βρόυμε τιμές κοντά εκει που τέμνονται οι παραστάσεις.
 
-#+attr_html: :width 300px
-#+attr_latex: :width 300px
-#+ATTR_ORG: :width 100
+#+begin_center
+#+attr_html: :width 900px
+#+attr_odt: :width 900px
 [[./ask7/graph.jpg]]
+#+end_center
+Στο γράφημα έχουν σημιωθεί μερικές αρχικές προσεγγίσεις. Οι (-1, 0), (0.1, 0.1) (1, 0).
 
 *** Μέθοδος Επίλυσης στο Matlab
 
@@ -444,6 +446,81 @@ df = @(x) [
     -10*pi*sin(pi*x(1)),             -exp(-x(2))
           ];
 #+end_src
+
+Έπειτα θα θέσουμε τις αρχικές προσεγγίσεις, την ακρίβια που θέλουμε και των αριθμό των επαναλήψεων.
+#+begin_src matlab
+tol = 1e-7; % Tolerance value for the Newton-Raphson method
+
+% Different initial guess values and number of iterations.
+x0 = [-1 0]; n = 16;	
+% x0 = [0.1 0.1]; n = 20;
+% x0 = [1 0]; n = 18;
+#+end_src
+Ο χρήστης μπορεί να βάλει μια απο αυτές τις προσεγγίσεις βγάζοντας την απο τα σχόλια.
+
+Μετά θα καλέσουμε την συνάρτηση =newtonRaphson()= και θα εκτυπώσουμε τα αποτελέσματα.
+#+begin_src matlab
+[res, times] = newtonRaphson(f, df, x0, n, tol); % Call to the Newton-Raphson method
+
+fres = f(res); % Evaluate the function at the obtained result
+
+% Display the result and the number of iterations.
+fprintf("For f(x, y) = 0 and g(x, y) = 0 using the method Newton-Raphson that run %d times, we found that\n\tx0 = %.6f,\n\ty0 = %.6f\n", times, res(1), res(2));
+fprintf("f(x0, y0) = %.6f\ng(x0, y0) = %.6f\n", fres(1), fres(2));
+#+end_src
+
+*** Συνάρτηση newtonRaphson
+
+Η συνάρτηση πέρνει ως ορίσματα τους πίνακες f, df, την αρχική προσέγγιση x0, τον αριθμό επαναλήψεων n και την ακρίβια tol. Επιστρέφει τον πίνακα res που περιέχει τις ρίζες (x, y) και τον αριθμό των επαναλήψεων i που έκανε.
+
+Αρχικοποιούμε την τον πίνακα res και θα κάνουμε την επανάληψη που θα τρέχει n φορές.
+
+#+begin_src matlab
+% Initialize result
+res = [0 0];
+
+% Perform Newton-Raphson iteration
+for i = 1:n
+    % Compute the inverse Jacobian and the residual of the system
+    % invJ = inv(df(x0));
+    invJ = inverse(df(x0));
+    F = f(x0);
+    res = x0 - (invJ*F)';
+
+    % Check if the solution has converged
+    if(abs(res - x0) < tol)
+        break; % Solution has converged
+    end
+
+    % Update the guess for the next iteration
+    x0 = res;
+end
+#+end_src
+
+Στην αρχή τις επανάληψης θα υπολογίσουμε τον αντίστροφο πίνακα του =df(x0)= και τον πίνακα =f(x0)=. Θα κάνουμε την πράξη και θα την βάλουμε στο res. Επίσης χρειάζεται να πάρουμε τον ανάστροφο του πίνακα που προκύπτει απο τον πολλαπλασιασμό του =injJ*F= για να έχει ίδιες διαστάσεις με το x0.
+Τέλος θα ελένξουμε αν η διαφορά του res με το x0 είναι μικρότερη απο το tol για να σταματήσουμε την επανάληψη και θα θέσουμε x0 ίσο με το res.
+Αν τελείωσει η επανάληψη και το i είναι ίσο με το n σημαίνει πως η μέθοδο απέτυχε να συγκλίνει οπότε θα το εκτυπώσουμε.
+#+begin_src matlab
+% Check if the Newton-Raphson method failed to converge
+if(i == n)
+    fprintf("Newton-Raphson method failed to converge.\n");
+end
+#+end_src
+
+Επιπλέον έχουμε την βοηθητική μέθοδο =inverse()= που υπολογίζει το αντίστροφο πίνακα διαστάσεων 2x2 του πίνακα που του δίνεται.
+#+begin_src matlab
+function [B] = inverse(A)
+% INVERSE - Find the inverse of a 2x2 matrix
+% A: 2x2 matrix to find the inverse of
+% B: Inverse of A
+
+    detA = A(1, 1)*A(2, 2) - A(1, 2)*A(2, 1);	% Find the determinant of A
+    adjA = [A(2, 2) -A(1, 2); -A(2, 1) A(1, 1)];  % Find the adjugate of A
+    B = (1/detA) * adjA;			% Divide the adjugate of A by its determinant to get the inverse of A
+end
+#+end_src
+Υπολογίζει πρώτα την ορίζουσα του πίνακα Α και τον συμπληρωματικό του πίνακα adj(A) και τέλος θέτει και επιστρέφει πίνακα Β που έχει τις πράξεις.
+
 
 ** Αναφορές
 :PROPERTIES:

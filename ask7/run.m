@@ -16,9 +16,9 @@ df = @(x) [
 tol = 1e-7; % Tolerance value for the Newton-Raphson method
 
 % Different initial guess values and number of iterations.
-x0 = [-1 0]; n = 16;		% res --> [1.499230 -0.705166]
+% x0 = [-1 0]; n = 16;		% res --> [1.499230 -0.705166]
 % x0 = [0.1 0.1]; n = 20;	% res --> [1.499230 -0.705166]
-% x0 = [1 0]; n = 18;		% res --> [14.435906 21.244032]
+x0 = [1 0]; n = 18;		% res --> [14.435906 21.244032]
 
 [res, times] = newtonRaphson(f, df, x0, n, tol); % Call to the Newton-Raphson method
 

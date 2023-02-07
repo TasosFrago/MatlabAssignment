@@ -1,3 +1,4 @@
+# -*- org-image-actual-width: nil; -*-
 #+AUTHOR: Tasos Fragkopoulos
 #+TITLE: Εργασία Εξαμήνου Μαθηματικό Λογισμικό
 #+OPTIONS: tex:dvipng
@@ -12,7 +13,8 @@
 Για να λύσουμε την άσκηση θα πρέπει αρχικά να βρούμε τις ακτίνες κάθε κύκλου. Έστω κύκλοι A, B, C με κέντρα $(x_1, y_1), (x_2, y_2), (x_3, y_3)$ και ακτίνες $R_1, R_2, R_3$ αντοίστοιχα, όπως φαίνεται στην εικόνα παρακάτω.
 
 #+ATTR_HTML: width="300px"
-#+ATTR_ORG: :width 300
+#+ATTR_ORG: :width 100
+#+attr_latex: :width 300px
 [[./ask1/outputImage.jpg]]
 
 Ξέρωντας τα αυτά η απόσταση μεταξύ κάθε κέντρου θα είναι:
@@ -312,7 +314,7 @@ end
 
 Για την τελευταία επανάληψη ελέγχουμε αν τα λεφτά που δώθηκαν είναι είναι ίσα με τα οφειλούμενα για να τελειώσουμε το πρόγραμμα. Αν είναι λιγότερα το πρόγραμμα ξανα τρέχει και ο χρήστης μπορεί να βάλει και άλλα χρήματα στο μηχάνημα. Αν βάλει περισσότερα τότε πρέπει το μηχάνημα να δώσει ρέστα. Οπότε διατρέχουμε το διάνυσμα με τα χρήματα από το μεγαλύτερο προς το μικρότερο. Αφαιρούμε από τα λεφτά που χρωστάει το μηχάνημα τα λεφτά της κάθε επανάληψης και ελέγχουμε αν είναι ίσα με το χρήμα της κάθε επανάληψης για να τελείωσει το πρόγραμμα ή αν είναι μεγαλύτερο για να συνεχίσει τις επαναλήψης.
 
-Είναι σημαντικό να αναφαίρουμε πως κάθε φορά που κάνουμε αφαίρεση των χρημάτων χρησιμοποιούμε την συνάρτηση =round()= για στρογκυλοποιήσουμε στα δύο δεκαδικά γιατί οι πράξεις με δεκαδικούς στο *Matlab* δεν είναι ακριβείς και για αυτό δεν μπορούμε να πάρουμε μηδέν[1].
+Είναι σημαντικό να αναφαίρουμε πως κάθε φορά που κάνουμε αφαίρεση των χρημάτων χρησιμοποιούμε την συνάρτηση =round()= για στρογκυλοποιήσουμε στα δύο δεκαδικά γιατί οι πράξεις με δεκαδικούς στο *Matlab* δεν είναι ακριβείς και για αυτό δεν μπορούμε να πάρουμε μηδέν[[#references][[1]]].
 
 ** Άσκηση 5
 
@@ -340,7 +342,7 @@ U(:, 1) = V(:, 1);	% The first column of U is equal to the first column of V
 $u_{i+1} = a_{i+1} - \sum_{k=1}^{i}\frac{\left \langle a_{i+1}, u_k \right \rangle}{\left \| u_k \right \|^2}u_k$
 #+end_center
 
-_*Σημείωση*_:Υπάρχει λάθος στον τύπο της εκφώνησης. Μέσα στο άθροισμα όλα τα u θα είναι τα u k. Αλλιώς θα προσθέτουμε i φορές το ίδιο πράγμα.[2]
+_*Σημείωση*_:Υπάρχει λάθος στον τύπο της εκφώνησης. Μέσα στο άθροισμα όλα τα u θα είναι τα u k. Αλλιώς θα προσθέτουμε i φορές το ίδιο πράγμα[[#references][[2]]].
 
 Πρώτα θα υπολογίσουμε το εσωτερικό του αθροίσματος με την βοηθητική συνάρτηση =proj(v, u)=:
 
@@ -363,7 +365,7 @@ function [ res ] = proj(v, u)
 end
 #+end_src
 
-Για να υπολογίσουμε το εσωτερικό γινόμενο θα κάνουμε πολλαπλασιασμό αναστροφου πίνακα με πίνακα που είναι πολύ πιο αποτελεσματικό και γρήγορο από το να βρήσκαμε το άθροισμα όλων των γινομένων στοιχείων προς στοιχείο των δύο πινάκων. Αυτό γιατί οι ενσωματομένοι τελεστές ='= και =*= πινάκων είναι πιο αποτελεσματικοί[3].
+Για να υπολογίσουμε το εσωτερικό γινόμενο θα κάνουμε πολλαπλασιασμό αναστροφου πίνακα με πίνακα που είναι πολύ πιο αποτελεσματικό και γρήγορο από το να βρήσκαμε το άθροισμα όλων των γινομένων στοιχείων προς στοιχείο των δύο πινάκων. Αυτό γιατί οι ενσωματομένοι τελεστές ='= και =*= πινάκων είναι πιο αποτελεσματικοί[[#references][[3]]].
 Για το τετράγωνο της νόρμας του $u_i$ άμα κάνουμε τις απλοποιήσει μπορούμε να καταλήξουμε:
 #+begin_center
 $\left \| u_i \right \|^2 = \sqrt{u_1^2 + u_2^2 + ... + u_n^2}^2 = u_1^2 + u_2^2 + ... + u_n^2 = u \cdot u$
@@ -400,15 +402,58 @@ U(:, i+1) = V(:, i+1) - s;
 
 ** Άσκηση 7
 
+*** Μέθοδος Επίλυσης
 
+Οι σχέσεις x και y που δίνονται στην εκφόνηση βγαίνουν από την πράξη[[#references][[5]]]
 #+begin_center
-Αναφορές
+
+$$ \Large p_{n+1} = p_n - \frac{F}{J} $$ όπου p, F πίνακες $$p = \begin{bmatrix} x & y \end{bmatrix}$$, $$F = \begin{bmatrix} f(x, y) \\ g(x, y) \end{bmatrix}$$ και J ο Ιακωβιανός πίνακας του F $$\Large J = \begin{bmatrix} \frac{\partial f(x,y)}{\partial x} & \frac{\partial f(x,y)}{\partial y} \\ \frac{\partial g(x,y)}{\partial x} & \frac{\partial g(x,y)}{\partial y} \end{bmatrix}$$
+#+end_center
+
+Αν κάνουμε τις πράξεις:
+#+begin_center
+$$p_n - \frac{1}{\frac{\partial f}{\partial x}\frac{\partial g}{\partial y}-\frac{\partial g}{\partial x}\frac{\partial f}{\partial y}} \Large\begin{bmatrix} \frac{\partial g}{\partial y} & -\frac{\partial f}{\partial y} \\ -\frac{\partial g}{\partial x} & \frac{\partial f}{\partial x} \end{bmatrix} \begin{bmatrix} f(x,y) \\ g(x, y) \end{bmatrix}=
+ p_n - \frac{1}{\frac{\partial f}{\partial x}\frac{\partial g}{\partial y}-\frac{\partial g}{\partial x}\frac{\partial f}{\partial y}} \Large\begin{bmatrix} f\frac{\partial g}{\partial y} -g \frac{\partial f}{\partial y} \\ g \frac{\partial f}{\partial x}- f\frac{\partial g}{\partial x}\end{bmatrix}\Rightarrow$$
 #+end_center
 #+begin_center
+$$p_{n+1} =\Large\begin{bmatrix}x_n - \Large\frac{f\frac{\partial g}{\partial y} -g \frac{\partial f}{\partial y}}{\frac{\partial f}{\partial x}\frac{\partial g}{\partial y}-\frac{\partial g}{\partial x}\frac{\partial f}{\partial y}} \\ y_n- \Large\frac{g \frac{\partial f}{\partial x}- f\frac{\partial g}{\partial x}}{\frac{\partial f}{\partial x}\frac{\partial g}{\partial y}-\frac{\partial g}{\partial x}\frac{\partial f}{\partial y}} \end{bmatrix}\Rightarrow \begin{bmatrix} x_{n+1} \\ y_{n+1} \end{bmatrix} = \Large\begin{bmatrix}x_n - \Large\frac{f\frac{\partial g}{\partial y} -g \frac{\partial f}{\partial y}}{\frac{\partial f}{\partial x}\frac{\partial g}{\partial y}-\frac{\partial g}{\partial x}\frac{\partial f}{\partial y}} \\ y_n- \Large\frac{g \frac{\partial f}{\partial x}- f\frac{\partial g}{\partial x}}{\frac{\partial f}{\partial x}\frac{\partial g}{\partial y}-\frac{\partial g}{\partial x}\frac{\partial f}{\partial y}} \end{bmatrix}$$
+#+end_center
+Θα χρησιμοποιήσουμε λοιπόν πίνακες συναρτήσεων αντι για ξεχωριστές συναρτήσεις γιατί θα είναι πιο εύκολο να τους χειρηστούμε και να κάνουμε πράξεις με αυτούς στο matlab.
+
+Επιπλέον για την μέθοδο θα χρειαστούμε μια αρχική προσέγγιση. Για να την βρούμε θα κάνουμε τα γραφήματα και θα βρόυμε τιμές κοντά εκει που τέμνονται οι παραστάσεις.
+
+#+attr_html: :width 300px
+#+attr_latex: :width 300px
+#+ATTR_ORG: :width 100
+[[./ask7/graph.jpg]]
+
+*** Μέθοδος Επίλυσης στο Matlab
+
+Η επίλυση του συγκεκριμένου προβήματος θα γίνεται στο αρχείο =run.m= καθώς υπάρχει αρχείο =newtonRaphson.m= που περιέχει την συνάρτηση που εφαρμόζει την μέθοδο Newton-Raphson.
+Ξεκινόντας θα θέσουμε λοιπόν τους πίνακες συναρτήσεων:
+#+begin_src matlab
+% Matix with functions f and g inside
+f = @(x) [
+    1-x(1)-x(2)*sin(pi*x(1)/2);   % f(x, y) - First equation
+    exp(-x(2))+10*cos(pi*x(1))-2  % g(x, y) - Second equation
+         ];
+
+% Jacobian matrix of matrix f
+df = @(x) [
+    -1-x(2)*cos(pi*x(1)/2)*(pi/2),   -sin(pi*x(1)/2);
+    -10*pi*sin(pi*x(1)),             -exp(-x(2))
+          ];
+#+end_src
+
+** Αναφορές
+:PROPERTIES:
+:CUSTOM_ID: references
+:END:
+-----
 [1] Stiff, J., & Somani, S. (n.d.). FAQ | MATLAB Wiki | Fandom. MATLAB Wiki. Retrieved February 2, 2023, from [[https://matlab.fandom.com/wiki/FAQ#Why_is_0.3_-_0.2_-_0.1_(or_similar)_not_equal_to_zero?]]
+
 [2] Harvey Mudd College. (2019). Gram-Schmidt Method. Gram-Schmidt Method – Calculus Tutorials. Retrieved February 6, 2023, from https://math.hmc.edu/calculus/hmc-mathematics-calculus-online-tutorials/linear-algebra/gram-schmidt-method/
+
 [3] Mathworks. (2012, September 19). Vectorization - MATLAB & Simulink. MathWorks. Retrieved February 6, 2023, from https://www.mathworks.com/help/matlab/matlab_prog/vectorization.html
 
-#+end_center
-
-
+[4] Chakraborty, A. (2020, February 27). Nonlinear equations. Retrieved February 7, 2023, from https://www.isical.ac.in/~arnabc/numana/nonlin1.html
